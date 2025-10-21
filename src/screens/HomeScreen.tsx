@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { useSavedDestinations } from "../contexts/SavedDestinationsContext";
 import NotificationsSlide from "../components/NotificationsSlide";
 
@@ -299,7 +299,7 @@ const HomeScreen = () => {
       {/* Header */}
       <View className="px-5 pt-2 pb-4 flex-row items-center justify-between">
         <View className="flex-row items-center">
-          <Text className="text-[22px] mr-2">👤</Text>
+          <Feather name="user" size={24} color="black" />
           <Text className="text-[18px] font-semibold text-primary">
             Hola, Jorge
           </Text>
@@ -308,7 +308,7 @@ const HomeScreen = () => {
           onPress={() => setShowNotifications(true)}
           className="p-2 rounded-full bg-white/70"
         >
-          <Text className="text-[20px]">🔔</Text>
+          <AntDesign name="bell" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
