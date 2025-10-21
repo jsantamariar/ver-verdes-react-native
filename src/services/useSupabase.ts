@@ -1,87 +1,114 @@
-import { useState, useEffect, createContext, useContext } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
 import * as SecureStore from "expo-secure-store";
 import { supabase } from "./supabaseClient";
-import type { Usuario } from "../types/usuario";
+import type { User } from "../types/user";
 
 interface AuthContextValue {
-  usuario: Usuario | null;
+  user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<{ error: string | null }>;
-  signup: (
+  sendOTP: (email: string) => Promise<{ error: string | null }>;
+  verifyOTP: (
     email: string,
-    password: string,
-    nombre: string
+    token: string
   ) => Promise<{ error: string | null }>;
   logout: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const defaultContext: AuthContextValue = {
+  user: null,
+  loading: true,
+  sendOTP: async () => ({ error: null }),
+  verifyOTP: async () => ({ error: null }),
+  logout: async () => {},
+};
+
+const AuthContext = createContext(defaultContext);
 
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth debe usarse dentro de AuthProvider");
-  return ctx;
+  return useContext(AuthContext);
 }
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [usuario, setUsuario] = useState<Usuario | null>(null);
+interface Props {
+  children: React.ReactNode;
+}
+
+export const AuthProvider: React.FC<Props> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Cargar usuario al iniciar
   useEffect(() => {
     const cargarUsuario = async () => {
       setLoading(true);
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        setUsuario({
+        setUser({
           id: data.user.id,
-          nombre: data.user.user_metadata?.name || "",
+          name: data.user.user_metadata?.name || "",
           email: data.user.email || "",
-          fotoPerfilURL: data.user.user_metadata?.avatar_url || "",
+          avatar_url: data.user.user_metadata?.avatar_url || "",
         });
       } else {
-        setUsuario(null);
+        setUser(null);
       }
       setLoading(false);
     };
     cargarUsuario();
   }, []);
 
-  // Login con Supabase
-  const login = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (!error) {
-      await supabase.auth.getUser();
-      setLoading(true);
-      setTimeout(() => setLoading(false), 500);
+  const sendOTP = async (email: string) => {
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+      });
+      return { error: error?.message || null };
+    } catch (err) {
+      return { error: (err as Error).message };
     }
-    return { error: error?.message || null };
   };
 
-  // Signup con Supabase y nombre
-  const signup = async (email: string, password: string, nombre: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { name: nombre } },
-    });
-    setLoading(true);
-    setTimeout(() => setLoading(false), 500);
-    return { error: error?.message || null };
+  const verifyOTP = async (email: string, token: string) => {
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: "email",
+      });
+
+      if (!error) {
+        const { data } = await supabase.auth.getUser();
+        if (data.user) {
+          setUser({
+            id: data.user.id,
+            name: data.user.user_metadata?.name || "",
+            email: data.user.email || "",
+            avatar_url: data.user.user_metadata?.avatar_url || "",
+          });
+        }
+      }
+
+      return { error: error?.message || null };
+    } catch (err) {
+      return { error: (err as Error).message };
+    }
   };
 
-  // Logout
   const logout = async () => {
-    await supabase.auth.signOut();
-    setUsuario(null);
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+    } catch (err) {
+      console.error("Error al cerrar sesión:", err);
+    }
   };
 
-  return (
-    <AuthContext.Provider value={{ usuario, loading, login, signup, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
+  return React.createElement(AuthContext.Provider, {
+    value: {
+      user,
+      loading,
+      sendOTP,
+      verifyOTP,
+      logout,
+    },
+    children,
+  });
+};

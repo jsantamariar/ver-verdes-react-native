@@ -11,12 +11,14 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useSavedDestinations } from "../contexts/SavedDestinationsContext";
+import NotificationsSlide from "../components/NotificationsSlide";
 
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const { savedDestinations, toggleSave } = useSavedDestinations();
 
   const [query, setQuery] = useState("");
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const categories = [
     "Todos",
@@ -42,6 +44,7 @@ const HomeScreen = () => {
       difficulty: "Fácil",
       duration: "4h 00m",
       rating: 4.8,
+      price: 45000,
       category: "Recomendados para ti",
     },
     {
@@ -56,6 +59,7 @@ const HomeScreen = () => {
       difficulty: "Fácil",
       duration: "2h 00m",
       rating: 4.5,
+      price: 35000,
       category: "Caminatas",
     },
     {
@@ -70,6 +74,7 @@ const HomeScreen = () => {
       difficulty: "Fácil",
       duration: "3h 00m",
       rating: 4.9,
+      price: 55000,
       category: "Populares",
     },
     {
@@ -84,6 +89,7 @@ const HomeScreen = () => {
       difficulty: "Moderada",
       duration: "8h 00m",
       rating: 4.9,
+      price: 55000,
       category: "Pueblos",
     },
     {
@@ -97,6 +103,7 @@ const HomeScreen = () => {
       difficulty: "Fácil",
       duration: "2h 30m",
       rating: 4.7,
+      price: 40000,
       category: "Mejor calificados",
     },
     {
@@ -110,6 +117,7 @@ const HomeScreen = () => {
       difficulty: "Ninguna",
       duration: "5h 00m",
       rating: 4.8,
+      price: 45000,
       category: "Eventos",
     },
     {
@@ -123,6 +131,7 @@ const HomeScreen = () => {
       difficulty: "Ninguna",
       duration: "4h 00m",
       rating: 4.6,
+      price: 38000,
       category: "Al aire libre",
     },
     {
@@ -136,6 +145,7 @@ const HomeScreen = () => {
       difficulty: "Fácil",
       duration: "3h 00m",
       rating: 4.7,
+      price: 40000,
       category: "Recomendados para ti",
     },
     {
@@ -149,6 +159,7 @@ const HomeScreen = () => {
       difficulty: "Fácil",
       duration: "2h 00m",
       rating: 4.6,
+      price: 38000,
       category: "Populares",
     },
     {
@@ -162,6 +173,7 @@ const HomeScreen = () => {
       difficulty: "Fácil",
       duration: "6h 00m",
       rating: 4.5,
+      price: 35000,
       category: "Pueblos",
     },
     {
@@ -175,6 +187,7 @@ const HomeScreen = () => {
       difficulty: "Fácil",
       duration: "1h 30m",
       rating: 4.4,
+      price: 30000,
       category: "Mejor calificados",
     },
     {
@@ -188,6 +201,7 @@ const HomeScreen = () => {
       difficulty: "Ninguna",
       duration: "4h 00m",
       rating: 4.7,
+      price: 40000,
       category: "Eventos",
     },
     {
@@ -201,6 +215,7 @@ const HomeScreen = () => {
       difficulty: "Moderada",
       duration: "3h 00m",
       rating: 4.6,
+      price: 38000,
       category: "Al aire libre",
     },
   ];
@@ -232,6 +247,7 @@ const HomeScreen = () => {
             difficulty: destination.difficulty,
             duration: destination.duration,
             rating: destination.rating,
+            price: destination.price,
           })
         }
       >
@@ -245,13 +261,13 @@ const HomeScreen = () => {
             <Ionicons
               name={isSaved ? "heart" : "heart-outline"}
               size={20}
-              color={isSaved ? "#FF6B6B" : "#666"}
+              color={isSaved ? "#F4991A" : "#666"}
             />
           </TouchableOpacity>
         </View>
         <View className="p-3 flex-1">
           <Text
-            className="text-[16px] font-semibold text-secondary"
+            className="text-[16px] font-semibold text-primary"
             numberOfLines={1}
           >
             {destination.title}
@@ -260,15 +276,15 @@ const HomeScreen = () => {
             {destination.subtitle}
           </Text>
           <View className="flex-row items-center mt-2">
-            <Text className="text-[12px] text-[#527A33] mr-3">
+            <Text className="text-[12px] text-primary mr-3">
               🏞️ {destination.difficulty}
             </Text>
-            <Text className="text-[12px] text-[#527A33] mr-3">
+            <Text className="text-[12px] text-primary mr-3">
               ⏱️ {destination.duration}
             </Text>
             <View className="flex-row items-center">
-              <Text className="text-[12px] text-[#FFD700] mr-1">⭐</Text>
-              <Text className="text-[12px] text-[#FFD700] font-semibold">
+              <Text className="text-[12px] text-secondary mr-1">⭐</Text>
+              <Text className="text-[12px] text-secondary font-semibold">
                 {destination.rating}
               </Text>
             </View>
@@ -284,18 +300,24 @@ const HomeScreen = () => {
       <View className="px-5 pt-2 pb-4 flex-row items-center justify-between">
         <View className="flex-row items-center">
           <Text className="text-[22px] mr-2">👤</Text>
-          <Text className="text-[18px] font-semibold text-secondary">
+          <Text className="text-[18px] font-semibold text-primary">
             Hola, Jorge
           </Text>
         </View>
-        <TouchableOpacity className="p-2 rounded-full bg-white/70">
+        <TouchableOpacity
+          onPress={() => setShowNotifications(true)}
+          className="p-2 rounded-full bg-white/70"
+        >
           <Text className="text-[20px]">🔔</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Título principal */}
+      {/* Título principal con fuente Bonfire */}
       <View className="px-5 py-5 mb-3">
-        <Text className="text-2xl font-bold text-secondary">
+        <Text
+          className="text-3xl tracking-widest text-center font-bold text-primary"
+          style={{ fontFamily: "Bonfire" }}
+        >
           Explora tu nuevo destino
         </Text>
       </View>
@@ -323,7 +345,7 @@ const HomeScreen = () => {
           return (
             <View key={category} className="mb-6">
               <View className="px-5 mb-3">
-                <Text className="text-[18px] font-bold text-secondary">
+                <Text className="text-[18px] font-bold text-primary">
                   {category}
                 </Text>
               </View>
@@ -350,6 +372,10 @@ const HomeScreen = () => {
             </View>
           )}
       </ScrollView>
+      <NotificationsSlide
+        isVisible={showNotifications}
+        onClose={() => setShowNotifications(false)}
+      />
     </SafeAreaView>
   );
 };

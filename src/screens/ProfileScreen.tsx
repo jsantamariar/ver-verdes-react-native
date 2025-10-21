@@ -58,16 +58,16 @@ const ProfileScreen = () => {
       >
         {/* Header */}
         <View className="px-5 pt-4 pb-6 flex-row items-center justify-between">
-          <Text className="text-2xl font-bold text-secondary">Mi Perfil</Text>
+          <Text className="text-2xl font-bold text-primary">Mi Perfil</Text>
           <TouchableOpacity
             onPress={handleEditToggle}
             className={`px-4 py-2 rounded-lg ${
-              isEditing ? "bg-primary" : "bg-[#f0f0f0]"
+              isEditing ? "bg-secondary" : "bg-[#f0f0f0]"
             }`}
           >
             <Text
               className={`font-semibold ${
-                isEditing ? "text-white" : "text-secondary"
+                isEditing ? "text-white" : "text-primary"
               }`}
             >
               {isEditing ? "Guardar" : "Editar"}
@@ -87,7 +87,7 @@ const ProfileScreen = () => {
               className="w-[140px] h-[140px] rounded-full"
             />
             {isEditing && (
-              <View className="absolute bottom-0 right-0 bg-primary rounded-full p-3">
+              <View className="absolute bottom-0 right-0 bg-secondary rounded-full p-3">
                 <Text className="text-[20px]">📷</Text>
               </View>
             )}
@@ -103,7 +103,7 @@ const ProfileScreen = () => {
         <View className="px-5 mb-6">
           {/* Nombre */}
           <View className="mb-4">
-            <Text className="text-[14px] font-semibold text-secondary mb-2">
+            <Text className="text-[14px] font-semibold text-primary mb-2">
               Nombre
             </Text>
             {isEditing ? (
@@ -127,7 +127,7 @@ const ProfileScreen = () => {
 
           {/* Apellido */}
           <View className="mb-4">
-            <Text className="text-[14px] font-semibold text-secondary mb-2">
+            <Text className="text-[14px] font-semibold text-primary mb-2">
               Apellido
             </Text>
             {isEditing ? (
@@ -151,7 +151,7 @@ const ProfileScreen = () => {
 
           {/* Correo electrónico */}
           <View className="mb-4">
-            <Text className="text-[14px] font-semibold text-secondary mb-2">
+            <Text className="text-[14px] font-semibold text-primary mb-2">
               Correo Electrónico
             </Text>
             {isEditing ? (
@@ -176,7 +176,7 @@ const ProfileScreen = () => {
 
           {/* Biografía */}
           <View className="mb-4">
-            <Text className="text-[14px] font-semibold text-secondary mb-2">
+            <Text className="text-[14px] font-semibold text-primary mb-2">
               Biografía
             </Text>
             {isEditing ? (
@@ -207,11 +207,11 @@ const ProfileScreen = () => {
               onPress={handleCancel}
               className="flex-1 bg-[#f0f0f0] rounded-lg py-3 items-center"
             >
-              <Text className="text-secondary font-semibold">Cancelar</Text>
+              <Text className="text-primary font-semibold">Cancelar</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleEditToggle}
-              className="flex-1 bg-primary rounded-lg py-3 items-center"
+              className="flex-1 bg-secondary rounded-lg py-3 items-center"
             >
               <Text className="text-white font-semibold">Guardar cambios</Text>
             </TouchableOpacity>
@@ -220,20 +220,17 @@ const ProfileScreen = () => {
 
         {/* Sección adicional - Opciones */}
         <View className="px-5 mt-8 border-t border-[#e0e0dc] pt-6">
-          <Text className="text-[14px] font-semibold text-secondary mb-3">
+          <Text className="text-[14px] font-semibold text-primary mb-3">
             Más opciones
           </Text>
           <TouchableOpacity className="flex-row items-center justify-between py-3 border-b border-[#f0f0f0]">
             <Text className="text-[16px] text-[#333]">Notificaciones</Text>
-            <Text className="text-[18px]">🔔</Text>
           </TouchableOpacity>
           <TouchableOpacity className="flex-row items-center justify-between py-3 border-b border-[#f0f0f0]">
             <Text className="text-[16px] text-[#333]">Ayuda</Text>
-            <Text className="text-[18px]">❓</Text>
           </TouchableOpacity>
           <TouchableOpacity className="flex-row items-center justify-between py-3">
             <Text className="text-[16px] text-red-500">Cerrar sesión</Text>
-            <Text className="text-[18px]">🚪</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

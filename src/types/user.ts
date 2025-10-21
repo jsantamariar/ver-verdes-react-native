@@ -1,10 +1,10 @@
-export interface Usuario {
+export interface User {
   /** Identificador único de usuario */
   id: string;
   /** Nombre visible del usuario */
-  nombre: string;
+  name: string;
   /** Correo electrónico */
   email: string;
   /** URL de la foto de perfil */
-  fotoPerfilURL: string;
+  avatar_url: string;
 }

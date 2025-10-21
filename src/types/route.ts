@@ -1,16 +1,16 @@
-export interface Ruta {
+export interface Route {
   /** Identificador único de la ruta */
   id: string;
   /** Nombre de la ruta */
-  nombre: string;
+  name: string;
   /** Descripción breve de la ruta */
-  descripcion: string;
+  description: string;
   /** Dificultad de la ruta */
-  dificultad: "baja" | "media" | "alta";
+  difficulty: "baja" | "media" | "alta";
   /** Duración estimada en minutos */
-  duracionEstimada: number;
+  estimatedDuration: number;
   /** Tipo de actividad principal */
-  tipoActividad:
+  activityType:
     | "senderismo"
     | "cascada"
     | "pueblo"
@@ -21,9 +21,7 @@ export interface Ruta {
   /** Longitud geográfica */
   lng: number;
   /** URLs de imágenes asociadas */
-  imagenes: string[];
+  images: string[];
   /** Calificación promedio de la ruta (1-5) */
-  calificacion: number;
-  /** Impacto ambiental del recorrido */
-  impactoAmbiental: "bajo" | "medio" | "alto";
+  score: number;
 }

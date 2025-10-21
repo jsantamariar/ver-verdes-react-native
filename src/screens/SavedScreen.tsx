@@ -23,6 +23,7 @@ const SavedScreen = () => {
       difficulty: "Fácil",
       duration: "4h 00m",
       rating: 4.8,
+      price: 45000,
       category: "Recomendados para ti",
     },
     {
@@ -37,6 +38,7 @@ const SavedScreen = () => {
       difficulty: "Fácil",
       duration: "2h 00m",
       rating: 4.5,
+      price: 35000,
       category: "Caminatas",
     },
     {
@@ -51,6 +53,7 @@ const SavedScreen = () => {
       difficulty: "Fácil",
       duration: "3h 00m",
       rating: 4.9,
+      price: 55000,
       category: "Populares",
     },
     {
@@ -65,6 +68,7 @@ const SavedScreen = () => {
       difficulty: "Moderada",
       duration: "8h 00m",
       rating: 4.9,
+      price: 55000,
       category: "Pueblos",
     },
     {
@@ -78,6 +82,7 @@ const SavedScreen = () => {
       difficulty: "Fácil",
       duration: "2h 30m",
       rating: 4.7,
+      price: 40000,
       category: "Mejor calificados",
     },
     {
@@ -91,6 +96,7 @@ const SavedScreen = () => {
       difficulty: "Ninguna",
       duration: "5h 00m",
       rating: 4.8,
+      price: 45000,
       category: "Eventos",
     },
     {
@@ -104,6 +110,7 @@ const SavedScreen = () => {
       difficulty: "Ninguna",
       duration: "4h 00m",
       rating: 4.6,
+      price: 38000,
       category: "Al aire libre",
     },
     {
@@ -117,6 +124,7 @@ const SavedScreen = () => {
       difficulty: "Fácil",
       duration: "3h 00m",
       rating: 4.7,
+      price: 40000,
       category: "Recomendados para ti",
     },
     {
@@ -130,6 +138,7 @@ const SavedScreen = () => {
       difficulty: "Fácil",
       duration: "2h 00m",
       rating: 4.6,
+      price: 38000,
       category: "Populares",
     },
     {
@@ -143,6 +152,7 @@ const SavedScreen = () => {
       difficulty: "Fácil",
       duration: "6h 00m",
       rating: 4.5,
+      price: 35000,
       category: "Pueblos",
     },
     {
@@ -156,6 +166,7 @@ const SavedScreen = () => {
       difficulty: "Fácil",
       duration: "1h 30m",
       rating: 4.4,
+      price: 30000,
       category: "Mejor calificados",
     },
     {
@@ -169,6 +180,7 @@ const SavedScreen = () => {
       difficulty: "Ninguna",
       duration: "4h 00m",
       rating: 4.7,
+      price: 40000,
       category: "Eventos",
     },
     {
@@ -182,6 +194,7 @@ const SavedScreen = () => {
       difficulty: "Moderada",
       duration: "3h 00m",
       rating: 4.6,
+      price: 38000,
       category: "Al aire libre",
     },
   ];
@@ -194,7 +207,7 @@ const SavedScreen = () => {
     <SafeAreaView className="flex-1 bg-background">
       {/* Header */}
       <View className="px-5 pt-2 pb-4">
-        <Text className="text-2xl font-bold text-secondary">Mis Guardados</Text>
+        <Text className="text-2xl font-bold text-primary">Mis Guardados</Text>
       </View>
 
       {/* Lista de destinos guardados */}
@@ -225,6 +238,7 @@ const SavedScreen = () => {
                   difficulty: destination.difficulty,
                   duration: destination.duration,
                   rating: destination.rating,
+                  price: destination.price,
                 })
               }
             >
@@ -239,13 +253,13 @@ const SavedScreen = () => {
                     onPress={() => toggleSave(destination.title)}
                     activeOpacity={0.7}
                   >
-                    <Ionicons name="heart" size={16} color="#FF6B6B" />
+                    <Ionicons name="heart" size={16} color="#F4991A" />
                   </TouchableOpacity>
                 </View>
                 <View className="flex-1 p-3 justify-between">
                   <View>
                     <Text
-                      className="text-[16px] font-semibold text-secondary"
+                      className="text-[16px] font-semibold text-primary"
                       numberOfLines={1}
                     >
                       {destination.title}
@@ -255,17 +269,17 @@ const SavedScreen = () => {
                     </Text>
                   </View>
                   <View className="flex-row items-center">
-                    <Text className="text-[12px] text-[#527A33] mr-3">
+                    <Text className="text-[12px] text-primary mr-3">
                       🏞️ {destination.difficulty}
                     </Text>
-                    <Text className="text-[12px] text-[#527A33] mr-3">
+                    <Text className="text-[12px] text-primary mr-3">
                       ⏱️ {destination.duration}
                     </Text>
                     <View className="flex-row items-center">
-                      <Text className="text-[12px] text-[#FFD700] mr-1">
+                      <Text className="text-[12px] text-secondary mr-1">
                         ⭐
                       </Text>
-                      <Text className="text-[12px] text-[#FFD700] font-semibold">
+                      <Text className="text-[12px] text-secondary font-semibold">
                         {destination.rating}
                       </Text>
                     </View>

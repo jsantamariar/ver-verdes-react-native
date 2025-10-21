@@ -1,56 +1,129 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { useAuth } from "../services/useSupabase";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../services/useSupabase";
 
 export default function LoginScreen() {
-  const { login } = useAuth();
+  const navigation = useNavigation<any>();
+  const { sendOTP } = useAuth();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    setError(null);
-    const { error } = await login(email, password);
-    if (error) setError(error);
+  const handleSendOTP = async () => {
+    if (!email.trim()) {
+      Alert.alert("Error", "Por favor ingresa tu correo electrónico");
+      return;
+    }
+
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Error", "Por favor ingresa un correo electrónico válido");
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await sendOTP(email);
+    setLoading(false);
+
+    if (error) {
+      Alert.alert("Error", error);
+    } else {
+      Alert.alert(
+        "Código enviado",
+        `Hemos enviado un código de verificación a ${email}`,
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("VerifyOTP", { email }),
+          },
+        ]
+      );
+    }
   };
+
   return (
-    <View className="flex-1 justify-center px-5 bg-background">
-      <Text className="text-2xl font-bold mb-4 self-center text-secondary">
-        Iniciar Sesión
-      </Text>
-      {error && <Text className="text-red-600 mb-2">{error}</Text>}
-      <TextInput
-        className="border border-gray-300 rounded-lg px-3 py-2 mb-2 bg-white"
-        placeholder="Correo"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
-        placeholderTextColor="#9ca3af"
-      />
-      <TextInput
-        className="border border-gray-300 rounded-lg px-3 py-2 mb-3 bg-white"
-        placeholder="Contraseña"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        placeholderTextColor="#9ca3af"
-      />
-      <TouchableOpacity
-        className="bg-primary rounded-lg py-3 mb-2"
-        onPress={handleLogin}
+    <SafeAreaView className="flex-1 bg-background">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1"
       >
-        <Text className="text-white text-center font-semibold">Entrar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        className="bg-secondary/10 rounded-lg py-3"
-        onPress={() => navigation.navigate("Signup" as never)}
-      >
-        <Text className="text-secondary text-center font-semibold">
-          Registrarse
-        </Text>
-      </TouchableOpacity>
-    </View>
+        <View className="flex-1 justify-center px-8">
+          {/* Título */}
+          <View className="mb-10">
+            <Text
+              className="text-4xl font-bold text-primary text-center mb-3"
+              style={{ fontFamily: "Bonfire" }}
+            >
+              Bienvenido
+            </Text>
+            <Text className="text-base text-center text-[#666]">
+              Ingresa tu correo para continuar
+            </Text>
+          </View>
+
+          {/* Campo de email */}
+          <View className="mb-6">
+            <Text className="text-sm font-semibold text-primary mb-2">
+              Correo Electrónico
+            </Text>
+            <TextInput
+              className="bg-white border border-gray-300 rounded-xl px-4 py-4 text-base"
+              placeholder="tu@email.com"
+              placeholderTextColor="#9ca3af"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              editable={!loading}
+            />
+          </View>
+
+          {/* Botón de enviar código */}
+          <TouchableOpacity
+            className={`rounded-xl py-4 shadow-lg ${
+              loading ? "bg-secondary/50" : "bg-secondary"
+            }`}
+            onPress={handleSendOTP}
+            disabled={loading}
+            activeOpacity={0.8}
+          >
+            <Text className="text-white text-center text-lg font-bold">
+              {loading ? "Enviando..." : "Enviar código"}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Información adicional */}
+          <View className="mt-8">
+            <Text className="text-sm text-center text-[#999] leading-5">
+              Te enviaremos un código de verificación a tu correo electrónico
+              para iniciar sesión de forma segura
+            </Text>
+          </View>
+
+          {/* Botón de volver */}
+          <TouchableOpacity
+            className="mt-8 py-3"
+            onPress={() => navigation.goBack()}
+            activeOpacity={0.7}
+          >
+            <Text className="text-primary text-center font-semibold">
+              Volver
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
